@@ -87,6 +87,7 @@ jobs:
           done
 
           echo "Application failed health check"
+          docker ps -a
           docker logs devops-portfolio-platform
           exit 1
 
@@ -99,17 +100,18 @@ jobs:
           curl --fail http://localhost:3000/
 
       - name: Show container status
+        if: always()
         run: |
           docker ps -a
-     
-     - name: Show container logs
-       if: always()
-       run: |
-         if docker ps -a --format '{{.Names}}' | grep -q '^devops-portfolio-platform$'; then
+
+      - name: Show container logs
+        if: always()
+        run: |
+          if docker ps -a --format '{{.Names}}' | grep -q '^devops-portfolio-platform$'; then
             docker logs devops-portfolio-platform
-         else
-           echo "Container was not found. Nothing to display."
-         fi
+          else
+            echo "Container was not found. Nothing to display."
+          fi
 
       - name: Stop container
         if: always()

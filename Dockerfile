@@ -7,7 +7,10 @@ ENV PORT=3000
 
 COPY package*.json ./
 
-RUN npm ci --omit=dev
+RUN apk upgrade --no-cache \
+    && npm ci --omit=dev \
+    && rm -rf /usr/local/lib/node_modules/npm \
+    && rm -f /usr/local/bin/npm /usr/local/bin/npx
 
 COPY src ./src
 

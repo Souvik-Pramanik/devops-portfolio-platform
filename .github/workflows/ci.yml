@@ -101,15 +101,15 @@ jobs:
       - name: Show container status
         run: |
           docker ps -a
-
-      - name: Show container logs
-        if: always()
-        run: |
-          if docker ps -a --format '{{.Names}}' | grep -q '^devops-portfolio-platform$'; then
+     
+     - name: Show container logs
+       if: always()
+       run: |
+         if docker ps -a --format '{{.Names}}' | grep -q '^devops-portfolio-platform$'; then
             docker logs devops-portfolio-platform
-          else
-            echo "Container was not found. Nothing to display."
-          fi
+         else
+           echo "Container was not found. Nothing to display."
+         fi
 
       - name: Stop container
         if: always()

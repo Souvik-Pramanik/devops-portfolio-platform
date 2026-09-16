@@ -23,6 +23,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: SAST security scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/javascript
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

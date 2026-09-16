@@ -58,6 +58,15 @@ jobs:
             -t devops-portfolio-platform:${{ github.sha }} \
             .
 
+      - name: Scan Docker image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: devops-portfolio-platform:${{ github.sha }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
       - name: Start container
         run: |
           docker run -d \

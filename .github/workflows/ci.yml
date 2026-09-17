@@ -134,7 +134,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Tag Docker image
+            - name: Tag Docker image
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -145,6 +145,10 @@ jobs:
             devops-portfolio-platform:${IMAGE_TAG} \
             ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
 
+          docker tag \
+            devops-portfolio-platform:${IMAGE_TAG} \
+            ${REGISTRY}/${REPOSITORY}:latest
+
       - name: Push Docker image to ECR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
@@ -154,3 +158,6 @@ jobs:
         run: |
           docker push \
             ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+
+          docker push \
+            ${REGISTRY}/${REPOSITORY}:latest

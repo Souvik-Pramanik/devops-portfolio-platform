@@ -87,8 +87,64 @@ case 'git':return `git ${args[0]||'status'}\n${args[0]==='status'?'On branch mai
 case 'docker':{const sub=args[0]||'ps';if(sub==='ps')return 'CONTAINER ID   IMAGE        STATUS          PORTS\na81c2d1        nginx:alpine Up 2 hours      0.0.0.0:80->80/tcp\nb19f4e2        node:22      Up 48 minutes   3000/tcp';if(sub==='images')return 'REPOSITORY    TAG       IMAGE ID      SIZE\nnginx         alpine    a1b2c3d4      43MB\nnode          22        e5f6a7b8      1.1GB';return `docker ${escapeHTML(args.slice(1).join(' '))} completed (simulation)`}case 'kubectl':{const sub=args[0]||'get';if(sub==='get')return 'NAME                         READY   STATUS    AGE\npod/portfolio-api-7c8d9      1/1     Running   2h\npod/nginx-ingress            1/1     Running   3h';return `kubectl ${escapeHTML(args.join(' '))} completed (simulation)`}case 'helm':return 'NAME    NAMESPACE  REVISION  UPDATED   STATUS\nportfolio default    3         today     deployed';case 'terraform':return args[0]==='plan'?`Terraform will perform the following actions:\n  + aws_instance.web\n  + aws_s3_bucket.assets\nPlan: 2 to add, 0 to change, 0 to destroy.\n\n(simulated — no cloud resources are modified)`:'Terraform command available: init · plan · validate · apply · destroy (simulation)';case 'ansible':return 'ansible-playbook: 3 tasks simulated, 3 ok, 0 changed, 0 failed';case 'ssh':case 'scp':return `${cmd}: connection simulation only — no external host is contacted.`;
 case 'tar':case 'gzip':case 'zip':case 'unzip':return `${cmd}: archive operation completed (simulation)`;case 'nano':case 'vim':return `${cmd}: interactive editor is represented by this portfolio shell; file editing is simulated.`;
 case 'about':return 'Souvik Pramanik — Cloud / DevOps Engineer in progress. CSE graduate with strong Linux, Bash and networking foundations.';case 'devops':return 'TARGET: Cloud / DevOps Engineer\nFOCUS: Linux · Docker · CI/CD · Cloud · Automation\nBUILD: Dedicated DevOps project in development';case 'cloud':return 'AWS: EC2 · S3 · IAM · CloudWatch · Lambda · ECS · EKS\nAzure: Intermediate\nKubernetes / Terraform / Ansible / Observability: learning';case 'experience':return '2026 → IT Executive / ERP & systems\n2025 → Field Support Engineer\n2024 → Full Stack Web + Penetration Testing';case 'projects':return '01 Animated Weather Application\n02 Facemask Detection using Python + ML\n03 Quantum Image Morphological Operation';case 'skills':return 'LINUX (ADV) · BASH (ADV) · NETWORKING (ADV) · GIT (INT) · DOCKER (INT) · AWS (INT) · AZURE (INT) · PYTHON (INT) · K8S (BEG) · TERRAFORM (BEG)';case 'github':{return loadGithub().then(d=>`LIVE GITHUB\n${d.profile.public_repos} public repositories · ${d.profile.followers} followers\n\n${d.repos.filter(r=>!r.fork).slice(0,5).map((r,i)=>`${String(i+1).padStart(2,'0')} ${r.name} · ${r.language||'CODE'} · ★${r.stargazers_count}`).join('\n')||'No public repositories found.'}\n\nOPEN: github.com/Souvik-Pramanik`)}case 'contact':return 'Email: snaptokon@proton.me\nGitHub: github.com/Souvik-Pramanik\nLinkedIn: linkedin.com/in/nukebyte';default:return `bash: ${escapeHTML(cmd)}: command not found\nType <span class="green">help</span> to see supported commands.`}}
-function renderTerminal(out){if(out==='__CLEAR__'){terminal.innerHTML='';return}terminal.insertAdjacentHTML('beforeend',`<div class="result">${typeof out==='string'?out.replace(/\n/g,'<br>'):String(out).replace(/\n/g,'<br>')}</div>`)}
-async function runCommand(cmd){cmd=cmd.trim();if(!cmd)return;const display=cmd;terminal.insertAdjacentHTML('beforeend',`<div class="cmd">souvik@portfolio:${escapeHTML(shell.cwd)}$ ${escapeHTML(display)}</div>`);shell.history.push(display);shell.histIndex=shell.history.length;try{let out;if(/^ask\s+/i.test(display)){const q=display.replace(/^ask\s+/i,'').trim();renderTerminal(await askAI(q,{silentUser:true}));out='AI response sent to assistant panel.'}else{out=linuxCommand(display);if(out&&typeof out.then==='function'){out=await out}}if(out!==undefined)renderTerminal(out)}catch(err){terminal.insertAdjacentHTML('beforeend',`<div class="result error">shell: ${escapeHTML(err.message||'command failed')}</div>`)}terminal.scrollTop=terminal.scrollHeight}
+function renderTerminal(out){
+  if(out==='__CLEAR__'){
+    terminal.replaceChildren();
+    return;
+  }
+
+  const div=document.createElement('div');
+  div.className='result';
+
+  const text=typeof out==='string'?out:String(out);
+  text.split('\n').forEach((line,index)=>{
+    if(index>0) div.appendChild(document.createElement('br'));
+    div.appendChild(document.createTextNode(line));
+  });
+
+  terminal.appendChild(div);
+}
+async function runCommand(cmd){
+  cmd=cmd.trim();
+  if(!cmd)return;
+
+  const display=cmd;
+
+  const cmdDiv=document.createElement('div');
+  cmdDiv.className='cmd';
+  cmdDiv.textContent=`souvik@portfolio:${shell.cwd}$ ${display}`;
+  terminal.appendChild(cmdDiv);
+
+  shell.history.push(display);
+  shell.histIndex=shell.history.length;
+
+  try{
+    let out;
+
+    if(/^ask\s+/i.test(display)){
+      const q=display.replace(/^ask\s+/i,'').trim();
+      renderTerminal(await askAI(q,{silentUser:true}));
+      out='AI response sent to assistant panel.';
+    }else{
+      out=linuxCommand(display);
+
+      if(out&&typeof out.then==='function'){
+        out=await out;
+      }
+    }
+
+    if(out!==undefined){
+      renderTerminal(out);
+    }
+  }catch(err){
+    const errorDiv=document.createElement('div');
+    errorDiv.className='result error';
+    errorDiv.textContent=`shell: ${err.message||'command failed'}`;
+    terminal.appendChild(errorDiv);
+  }
+
+  terminal.scrollTop=terminal.scrollHeight;
+}
 $('#terminalForm').addEventListener('submit',e=>{e.preventDefault();runCommand(input.value);input.value=''});
 input.addEventListener('keydown',e=>{if(e.key==='ArrowUp'){e.preventDefault();shell.histIndex=Math.max(0,shell.histIndex-1);input.value=shell.history[shell.histIndex]||''}if(e.key==='ArrowDown'){e.preventDefault();shell.histIndex=Math.min(shell.history.length,shell.histIndex+1);input.value=shell.history[shell.histIndex]||''}if(e.key==='Tab'){e.preventDefault();const val=input.value.trim(),parts=val.split(/\s+/),prefix=parts.at(-1)||'';const candidates=commandList().split(/ · |\n/).flatMap(x=>x.split(': ')).filter(Boolean);const matches=[...new Set([...Object.keys(commandAliases),...['help','neofetch','about','devops','cloud','experience','projects','skills','github','contact','clear'],...candidates])].filter(x=>x.startsWith(prefix));if(matches.length===1)input.value=parts.slice(0,-1).concat(matches[0]).join(' ')+' '}});
 $$('.terminal-help button').forEach(b=>b.onclick=()=>runCommand(b.dataset.cmd));
@@ -175,7 +231,59 @@ function selectCloud(key){const info=cloudInfo[key];if(!info)return;cloudMap.que
 cloudMap?.querySelectorAll('.cloud-node').forEach(n=>n.addEventListener('click',()=>selectCloud(n.dataset.cloud)));addEventListener('resize',drawCloudLines);addEventListener('load',drawCloudLines);setTimeout(drawCloudLines,80);
 
 /* CI/CD builder */
-function buildPipeline(){const vals=[$('#pipeSource').value,$('#pipeBuild').value,$('#pipeContainer').value,$('#pipeDeploy').value,$('#pipeObserve').value];const labels=[['SOURCE',vals[0]],['BUILD',vals[1]],['TEST','Automated tests'],['PACKAGE',vals[2]],['DEPLOY',vals[3]],['OBSERVE',vals[4]]];const path=$('#pipelinePath');path.innerHTML='';labels.forEach((x,i)=>{if(x[0]==='PACKAGE'&&x[1]==='None')return;if(i)path.insertAdjacentHTML('beforeend','<div class="pipe-arrow">→</div>');path.insertAdjacentHTML('beforeend',`<div class="pipe-step"><span>${escapeHTML(x[0])}</span><b>${escapeHTML(x[1])}</b><small>${i===0?'repository':i===1?'application':'delivery stage'}</small></div>`)});}
+function buildPipeline(){
+  const vals=[
+    $('#pipeSource').value,
+    $('#pipeBuild').value,
+    $('#pipeContainer').value,
+    $('#pipeDeploy').value,
+    $('#pipeObserve').value
+  ];
+
+  const labels=[
+    ['SOURCE',vals[0]],
+    ['BUILD',vals[1]],
+    ['TEST','Automated tests'],
+    ['PACKAGE',vals[2]],
+    ['DEPLOY',vals[3]],
+    ['OBSERVE',vals[4]]
+  ];
+
+  const path=$('#pipelinePath');
+  path.replaceChildren();
+
+  labels.forEach((x,i)=>{
+    if(x[0]==='PACKAGE'&&x[1]==='None')return;
+
+    if(i){
+      const arrow=document.createElement('div');
+      arrow.className='pipe-arrow';
+      arrow.textContent='→';
+      path.appendChild(arrow);
+    }
+
+    const step=document.createElement('div');
+    step.className='pipe-step';
+
+    const title=document.createElement('span');
+    title.textContent=x[0];
+
+    const value=document.createElement('b');
+    value.textContent=x[1];
+
+    const description=document.createElement('small');
+    description.textContent=
+      i===0?'repository':
+      i===1?'application':
+      'delivery stage';
+
+    step.appendChild(title);
+    step.appendChild(value);
+    step.appendChild(description);
+
+    path.appendChild(step);
+  });
+}
 $('#generatePipeline')?.addEventListener('click',buildPipeline);buildPipeline();
 
 /* Live GitHub analytics */
@@ -185,8 +293,13 @@ setTimeout(()=>{if(githubCache)renderAnalytics(githubCache)},2500);
 
 /* Docker playground */
 const dockerOutput=$('#dockerOutput');let dockerRunning=true;
-function dockerLine(html){dockerOutput.insertAdjacentHTML('beforeend',`<div>${html}</div>`);dockerOutput.scrollTop=dockerOutput.scrollHeight}
-$$('[data-docker]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.docker;if(a==='ps')dockerLine('<span class="ok">CONTAINER ID   IMAGE   STATUS</span><br>8c12a1   nginx   Up 4 minutes<br>4be913   python  Up 2 minutes');if(a==='run'){dockerRunning=true;dockerLine('<span class="ok">→</span> created container <b>web</b> from nginx:latest');}if(a==='logs')dockerLine('<span class="ok">GET / 200</span> · GET /health 200 · listening :80');if(a==='stop'){dockerRunning=false;dockerLine('<span class="ok">→</span> container web stopped (simulation)')}}));
+function dockerLine(text){
+  const div=document.createElement('div');
+  div.textContent=text;
+  dockerOutput.appendChild(div);
+  dockerOutput.scrollTop=dockerOutput.scrollHeight;
+}
+$$('[data-docker]').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.docker;if(a==='ps')dockerLine('CONTAINER ID   IMAGE   STATUS\n8c12a1   nginx   Up 4 minutes\n4be913   python  Up 2 minutes');if(a==='run'){dockerRunning=true;dockerLine('→ created container web from nginx:latest');}if(a==='logs')dockerLine('GET / 200 · GET /health 200 · listening :80');if(a==='stop'){dockerRunning=false;dockerLine('→ container web stopped (simulation)')}}));
 
 /* Terraform lab */
 $('#tfPlan')?.addEventListener('click',()=>{$('#tfResult').classList.add('ready');$('#tfResult').textContent='+ 1 to add, 0 to change, 0 to destroy · aws_instance.web · aws_s3_bucket.assets';});

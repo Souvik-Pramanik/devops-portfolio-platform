@@ -22,3 +22,9 @@ variable "alb_security_group_id" {
   description = "Security group ID for the Application Load Balancer"
   type        = string
 }
+
+variable "image_tag" {
+  description = "Immutable ECR image tag"
+  type        = string
+  default     = "latest"
+}

@@ -1,34 +1,18 @@
 {
-  "name": "devops-portfolio-platform",
-  "version": "1.0.0",
-  "description": "Self-Healing Cloud-Native Portfolio Platform",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
+  "name": "souvik-cloud-devops-portfolio-ai",
+  "version": "8.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cloud & DevOps portfolio with a resilient Gemini-powered assistant backend.",
   "scripts": {
-  "start": "node src/server.js",
-  "dev": "node --watch src/server.js",
-  "test": "jest --runInBand"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Souvik-Pramanik/devops-portfolio-platform.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Souvik-Pramanik/devops-portfolio-platform/issues"
-  },
-  "homepage": "https://github.com/Souvik-Pramanik/devops-portfolio-platform#readme",
   "dependencies": {
-    "express": "^5.2.1"
-  },
-  "devDependencies": {
-    "jest": "^30.5.1",
-    "supertest": "^7.2.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "@google/genai": "^1.29.0"
   }
 }

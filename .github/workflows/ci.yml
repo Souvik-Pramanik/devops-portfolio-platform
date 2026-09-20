@@ -1,10 +1,9 @@
-name: CI
+name: CI/CD
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -13,13 +12,23 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: devops-portfolio-platform
+  ECS_CLUSTER: devops-portfolio-cluster
+  ECS_SERVICE: devops-portfolio-service
+  ECS_TASK_DEFINITION: devops-portfolio-platform
+  CONTAINER_NAME: portfolio
+  ALB_URL: http://devops-portfolio-alb-1824700790.ap-south-1.elb.amazonaws.com
+
 jobs:
+
   test:
-    name: Test Application
+    name: Test & Security
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Secret detection
@@ -27,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: SAST security scan
+      - name: SAST scan
         uses: semgrep/semgrep-action@v1
         with:
           config: p/javascript
@@ -48,12 +57,12 @@ jobs:
         run: npm test
 
   docker:
-    name: Build and Test Docker Image
+    name: Build & Scan Docker
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Build Docker image
@@ -62,7 +71,7 @@ jobs:
             -t devops-portfolio-platform:${{ github.sha }} \
             .
 
-      - name: Scan Docker image
+      - name: Trivy security scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: devops-portfolio-platform:${{ github.sha }}
@@ -78,86 +87,121 @@ jobs:
             -p 3000:3000 \
             devops-portfolio-platform:${{ github.sha }}
 
-      - name: Wait for container
+      - name: Health check
         run: |
           for i in {1..20}; do
             if curl --fail --silent http://localhost:3000/api/health; then
-              echo "Application is healthy"
               exit 0
             fi
-
-            echo "Waiting for application..."
             sleep 2
           done
 
-          echo "Application failed health check"
-          docker ps -a
           docker logs devops-portfolio-platform
           exit 1
 
-      - name: Verify health endpoint
-        run: |
-          curl --fail http://localhost:3000/api/health
-
-      - name: Verify application endpoint
+      - name: Verify portfolio
         run: |
           curl --fail http://localhost:3000/
-
-      - name: Show container status
-        if: always()
-        run: |
-          docker ps -a
-
-      - name: Show container logs
-        if: always()
-        run: |
-          if docker ps -a --format '{{.Names}}' | grep -q '^devops-portfolio-platform$'; then
-            docker logs devops-portfolio-platform
-          else
-            echo "Container was not found. Nothing to display."
-          fi
 
       - name: Stop container
         if: always()
         run: |
           docker stop devops-portfolio-platform || true
 
-      - name: Configure AWS credentials
+      - name: Configure AWS
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::833822619479:role/GitHubActions-DevOpsPortfolio
-          aws-region: ap-south-1
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
+      - name: Login to ECR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Tag Docker image
+      - name: Push immutable image
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: devops-portfolio-platform
-          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker tag \
-            devops-portfolio-platform:${IMAGE_TAG} \
-            ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+            devops-portfolio-platform:${{ github.sha }} \
+            ${REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}
 
-          docker tag \
-            devops-portfolio-platform:${IMAGE_TAG} \
-            ${REGISTRY}/${REPOSITORY}:latest
+          docker push \
+            ${REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}
 
-      - name: Push Docker image to ECR
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: devops-portfolio-platform
-          IMAGE_TAG: ${{ github.sha }}
+  deploy:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
+    needs: docker
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::833822619479:role/GitHubActions-DevOpsPortfolio
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download ECS task definition
         run: |
-          docker push \
-            ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+          aws ecs describe-task-definition \
+            --task-definition $ECS_TASK_DEFINITION \
+            --query taskDefinition \
+            > task-definition.json
 
-          docker push \
-            ${REGISTRY}/${REPOSITORY}:latest
+      - name: Update container image
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: 833822619479.dkr.ecr.ap-south-1.amazonaws.com/devops-portfolio-platform:${{ github.sha }}
+
+      - name: Deploy ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Verify ECS
+        run: |
+          aws ecs describe-services \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE \
+            --query "services[0].{Running:runningCount,Desired:desiredCount,Status:status}" \
+            --output table
+
+  smoke-test:
+    name: Production Smoke Test
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - name: Production health check
+        run: |
+          curl --fail \
+            --retry 10 \
+            --retry-delay 5 \
+            "${ALB_URL}/api/health"
+
+      - name: Production portfolio check
+        run: |
+          curl --fail \
+            --retry 10 \
+            --retry-delay 5 \
+            "${ALB_URL}/"
+
+      - name: Deployment success
+        run: |
+          echo "======================================"
+          echo "🚀 DEPLOYMENT SUCCESSFUL"
+          echo "======================================"
+          echo "Commit: $GITHUB_SHA"
+          echo "Environment: production"
+          echo "ECS: $ECS_SERVICE"
+          echo "======================================"

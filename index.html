@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Souvik Pramanik — Cloud & DevOps Engineer</title>
+<meta name="description" content="Souvik Pramanik — Cloud & DevOps Engineer portfolio focused on Linux, cloud infrastructure, automation and CI/CD.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="ai-config.js"></script>
+</head>
+<body>
+<div id="boot" class="boot"><div class="boot-logo">SP<span>.</span></div><div class="boot-log" id="bootLog">BOOTING PERSONAL OS...</div><div class="boot-bar"><i></i></div></div>
+<div class="cursor"><i></i><b></b></div><div class="cursor-trail"></div><div class="noise"></div><div class="progress"></div>
+<canvas id="bgCanvas"></canvas>
+
+<header class="nav">
+  <a class="brand magnetic" href="#home">SP<span>.</span></a>
+  <nav><a href="#about">About</a><a href="#devops">DevOps</a><a href="#command-center">Command Center</a><a href="#lab">Labs</a><a href="#experience">Experience</a><a href="#projects">Work</a><a href="#stack">Stack</a><a href="#contact">Contact</a></nav>
+  <div class="nav-tools"><button class="mode-btn magnetic" id="modeBtn">VIEW: <b>OS</b></button><a class="nav-cta magnetic" href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+</header>
+
+<div class="mode-panel" id="modePanel" aria-label="Portfolio view selector">
+  <div class="mode-panel-head"><span>INTERFACE PROFILE</span><small>SELECT VIEW</small></div>
+  <button data-mode="os" class="active"><span class="mode-icon">◉</span><span class="mode-name">DIGITAL OS</span><small>immersive</small></button>
+  <button data-mode="recruiter"><span class="mode-icon">▣</span><span class="mode-name">RECRUITER</span><small>career first</small></button>
+  <button data-mode="developer"><span class="mode-icon">&lt;/&gt;</span><span class="mode-name">DEVELOPER</span><small>build first</small></button>
+  <div class="mode-panel-foot"><i></i><span id="modeHint">SYSTEM INTERFACE</span></div>
+</div>
+<div class="mode-transition" id="modeTransition"><span id="modeTransitionLabel">SWITCHING INTERFACE</span><i></i></div>
+<div class="mode-badge" id="modeBadge"><span></span><b>DIGITAL OS</b></div>
+
+<main id="home">
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-copy reveal">
+    <div class="eyebrow"><span></span> CLOUD & DEVOPS ENGINEERING / IN PROGRESS</div>
+    <h1 class="glitch" data-text="Souvik Pramanik">Souvik<br><em>Pramanik.</em></h1>
+    <p class="hero-sub"><strong>CLOUD · DEVOPS · AUTOMATION</strong><br>Engineering toward reliable infrastructure, repeatable deployments and scalable systems.</p>
+    <div class="hero-actions"><a href="#devops" class="button primary magnetic">EXPLORE DEVOPS <b>↓</b></a><a href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer" class="button secondary magnetic">GITHUB ↗</a></div>
+    <div class="hero-stats"><span><b>08</b> CLOUD SERVICES</span><span><b>15</b> DEVOPS / SYSTEM SKILLS</span><span><b>01</b> BUILD IN PROGRESS</span></div>
+  </div>
+  <div class="hero-3d reveal" id="hero3d">
+    <div class="hud top">CORE // 0x5350</div><div class="hud bottom">LAT 22.57 / LON 88.36</div>
+    <div class="cube-wrap"><div class="cube" id="cube"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="core-ring"></div><div class="core-ring r2"></div><div class="core-dot"></div>
+    <div class="node n1">AWS</div><div class="node n2">CI/CD</div><div class="node n3">LINUX</div><div class="node n4">DOCKER</div>
+    <div class="hero-code">01001001<br>01010100<br><span>SYS_ONLINE</span></div>
+  </div>
+  <div class="scrollcue">SCROLL / <span>EXPLORE</span><i></i></div>
+</section>
+
+<section class="ticker"><div>BUILD <b>✦</b> DEBUG <b>✦</b> SECURE <b>✦</b> DEPLOY <b>✦</b> BUILD <b>✦</b> DEBUG <b>✦</b> SECURE <b>✦</b> DEPLOY <b>✦</b></div></section>
+
+<section id="terminal" class="terminal-section reveal">
+  <div class="section-kicker">01 / INTERFACE</div>
+  <div class="terminal-window">
+    <div class="terminal-top"><span>● ● ●</span><b>souvik@portfolio:~</b><small>bash 5.2 · linux simulator · tab completion</small></div>
+    <div class="terminal-body" id="terminalBody"><div>Welcome to <strong>SOUVIK.OS</strong></div><div>Type <span class="green">help</span> to see available commands.</div><br></div>
+    <form id="terminalForm"><span>souvik@portfolio:~$</span><input id="terminalInput" autocomplete="off" spellcheck="false" aria-label="Terminal command"></form>
+  </div>
+  <div class="terminal-help">TRY: <button data-cmd="about">about</button><button data-cmd="devops">devops</button><button data-cmd="cloud">cloud</button><button data-cmd="experience">experience</button><button data-cmd="projects">projects</button><button data-cmd="github">github</button><button data-cmd="contact">contact</button><button data-cmd="neofetch">neofetch</button><button data-cmd="clear">clear</button></div>
+</section>
+
+<section id="github" class="github-section section reveal">
+  <div class="section-head github-head"><div><div class="section-kicker">02 / LIVE GITHUB</div><h2>Code in motion.<br><em>Updated from GitHub.</em></h2></div><div class="github-head-actions"><span class="github-live"><i></i> LIVE PUBLIC DATA</span><button class="button secondary github-refresh magnetic" id="githubRefresh" type="button">REFRESH ↻</button></div></div>
+  <div class="github-overview">
+    <div class="github-profile-card">
+      <div class="github-avatar-fallback">SP<span>.</span></div>
+      <div class="github-profile-copy"><span class="github-handle">@Souvik-Pramanik</span><h3 id="githubName">Souvik-Pramanik</h3><p id="githubBio">Loading public GitHub profile…</p><div class="github-links"><a href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer">OPEN PROFILE ↗</a><span id="githubUpdated">Syncing…</span></div></div>
+    </div>
+    <div class="github-stats" id="githubStats">
+      <div class="gh-stat"><b>—</b><span>REPOSITORIES</span></div><div class="gh-stat"><b>—</b><span>FOLLOWERS</span></div><div class="gh-stat"><b>—</b><span>FOLLOWING</span></div><div class="gh-stat"><b>—</b><span>PUBLIC STARS</span></div>
+    </div>
+  </div>
+  <div class="github-grid">
+    <div class="github-panel"><div class="panel-title"><span>RECENT REPOSITORIES</span><small>PUBLIC / UPDATED</small></div><div id="githubRepos" class="repo-list"><div class="github-loading"><i></i> Fetching repositories…</div></div></div>
+    <div class="github-panel"><div class="panel-title"><span>RECENT ACTIVITY</span><small>PUBLIC EVENTS</small></div><div id="githubActivity" class="activity-list"><div class="github-loading"><i></i> Fetching activity…</div></div></div>
+  </div>
+</section>
+
+<section id="about" class="statement reveal">
+  <div class="section-kicker">03 / IDENTITY</div><h2>From systems<br><em>to cloud engineering.</em></h2>
+  <div class="statement-row"><p>Computer Science & Engineering graduate building toward a Cloud/DevOps engineering career. My foundation spans Linux and operating systems, advanced networking, hardware support, web development and security; I am now applying that systems mindset to cloud infrastructure, containers, automation and CI/CD.</p><div class="identity-aside"><div class="photo-slot photo-filled"><img src="profile-photo.png" alt="Souvik Pramanik profile photo" loading="lazy"><span>PROFILE</span></div><div class="counter"><strong data-count="15">0</strong><small>TECHNICAL<br>FOCUS AREAS</small></div></div></div>
+</section>
+
+<section id="devops" class="devops-section section reveal">
+  <div class="section-head"><div><div class="section-kicker">04 / DEVOPS ENGINEERING</div><h2>Cloud stack.<br><em>Learning by building.</em></h2></div><p>Current capabilities and the next layer of the engineering journey.</p></div>
+  <div class="devops-grid">
+    <article class="devops-card featured"><div class="card-index">01</div><span class="status-chip">CURRENT TARGET</span><h3>Cloud / DevOps Engineer</h3><p>Focused on infrastructure automation, containerized workloads, CI/CD, cloud services and operational reliability.</p><div class="pipeline"><span>CODE</span><i>→</i><span>CI/CD</span><i>→</i><span>CONTAINER</span><i>→</i><span>CLOUD</span><i>→</i><span>OBSERVE</span></div></article>
+    <article class="devops-card"><div class="card-index">02</div><span class="status-chip">STRONGEST FOUNDATIONS</span><div class="skill-lines"><div><span>Linux</span><b>ADVANCED</b></div><div><span>Bash</span><b>ADVANCED</b></div><div><span>Networking</span><b>ADVANCED</b></div><div><span>Git / GitHub</span><b>INTERMEDIATE</b></div><div><span>Docker</span><b>INTERMEDIATE</b></div><div><span>Python</span><b>INTERMEDIATE</b></div></div></article>
+    <article class="devops-card"><div class="card-index">03</div><span class="status-chip">CLOUD EXPERIENCE</span><div class="cloud-grid"><span>AWS EC2</span><span>AWS S3</span><span>AWS IAM</span><span>CloudWatch</span><span>AWS Lambda</span><span>AWS ECS</span><span>AWS EKS</span><span>Azure</span></div></article>
+    <article class="devops-card learning"><div class="card-index">04</div><span class="status-chip">NEXT LAYER</span><div class="learning-stack"><span>Kubernetes <small>BEGINNER</small></span><span>Jenkins <small>BEGINNER</small></span><span>Terraform <small>BEGINNER</small></span><span>Ansible <small>BEGINNER</small></span><span>Prometheus <small>BEGINNER</small></span><span>Grafana <small>BEGINNER</small></span></div></article>
+  </div>
+  <div class="build-slot"><div><span class="section-kicker">CURRENT BUILD</span><h3>DevOps Project Lab</h3><p>Project details intentionally reserved. The first dedicated DevOps build will be added here when ready.</p></div><div class="build-state"><i></i> IN DEVELOPMENT</div></div>
+</section>
+
+<section id="command-center" class="section command-center reveal">
+  <div class="section-head"><div><div class="section-kicker">05 / DEVOPS COMMAND CENTER</div><h2>Operate.<br><em>Automate. Observe.</em></h2></div><p>Interactive engineering console — demo telemetry only.</p></div>
+  <div class="command-grid">
+    <div class="command-hero panel-card">
+      <div class="console-label">ENGINEERING CONTROL PLANE</div>
+      <div class="console-title">CLOUD / DEVOPS <span>READY</span></div>
+      <p>One interface for capability signals, deployment flow, cloud services and operational thinking.</p>
+      <div class="console-actions"><button class="button primary magnetic cc-action" data-target="pipeline">OPEN PIPELINE</button><button class="button secondary magnetic cc-action" data-target="cloud-explorer">OPEN CLOUD MAP</button></div>
+      <div class="console-footer"><span><i></i> SYSTEM INTERFACE</span><span>SAFE SIMULATION</span></div>
+    </div>
+    <div class="telemetry-grid">
+      <article class="telemetry-card"><span>LINUX</span><strong>ADV</strong><small>FOUNDATION</small><i class="spark s1"></i></article>
+      <article class="telemetry-card"><span>NETWORKING</span><strong>ADV</strong><small>FOUNDATION</small><i class="spark s2"></i></article>
+      <article class="telemetry-card"><span>CLOUD</span><strong>INT</strong><small>AWS / AZURE</small><i class="spark s3"></i></article>
+      <article class="telemetry-card"><span>CONTAINERS</span><strong>INT</strong><small>DOCKER</small><i class="spark s4"></i></article>
+      <article class="telemetry-card"><span>CI/CD</span><strong>INT</strong><small>GITHUB ACTIONS</small><i class="spark s5"></i></article>
+      <article class="telemetry-card"><span>K8S / IaC</span><strong>LEARN</strong><small>KUBERNETES · TERRAFORM</small><i class="spark s6"></i></article>
+    </div>
+  </div>
+  <div class="metric-ribbon"><div><span>PIPELINE STAGES</span><b>06</b></div><div><span>CLOUD SERVICES</span><b>08</b></div><div><span>DEVOPS FOCUS</span><b>15</b></div><div><span>PROJECT LAB</span><b>WIP</b></div></div>
+</section>
+
+<section id="cloud-explorer" class="section cloud-explorer reveal">
+  <div class="section-head"><div><div class="section-kicker">06 / CLOUD ARCHITECTURE EXPLORER</div><h2>Click the<br><em>infrastructure.</em></h2></div><p>Conceptual architecture based on your current cloud stack.</p></div>
+  <div class="cloud-map-wrap">
+    <div class="cloud-map" id="cloudMap">
+      <div class="cloud-node source" data-cloud="github"><span>01</span><b>GITHUB</b><small>CODE</small></div>
+      <div class="cloud-node ci" data-cloud="actions"><span>02</span><b>GITHUB ACTIONS</b><small>CI / CD</small></div>
+      <div class="cloud-node build" data-cloud="docker"><span>03</span><b>DOCKER</b><small>CONTAINER</small></div>
+      <div class="cloud-node cloud-main" data-cloud="aws"><span>04</span><b>AWS</b><small>CLOUD</small></div>
+      <div class="cloud-node ec2" data-cloud="ec2"><span>05</span><b>EC2</b><small>COMPUTE</small></div>
+      <div class="cloud-node ecs" data-cloud="ecs"><span>06</span><b>ECS</b><small>CONTAINERS</small></div>
+      <div class="cloud-node eks" data-cloud="eks"><span>07</span><b>EKS</b><small>K8S</small></div>
+      <div class="cloud-node s3" data-cloud="s3"><span>08</span><b>S3</b><small>STORAGE</small></div>
+      <div class="cloud-node iam" data-cloud="iam"><span>09</span><b>IAM</b><small>ACCESS</small></div>
+      <div class="cloud-node cw" data-cloud="cloudwatch"><span>10</span><b>CLOUDWATCH</b><small>OBSERVE</small></div>
+      <svg class="cloud-lines" aria-hidden="true"><line x1="0" y1="0" x2="0" y2="0"/><line x1="0" y1="0" x2="0" y2="0"/><line x1="0" y1="0" x2="0" y2="0"/><line x1="0" y1="0" x2="0" y2="0"/><line x1="0" y1="0" x2="0" y2="0"/></svg>
+    </div>
+    <aside class="cloud-inspector" id="cloudInspector"><span class="inspector-kicker">SELECT A NODE</span><h3>Infrastructure Explorer</h3><p>Click an infrastructure component to inspect the role it plays in a typical delivery workflow.</p><div class="inspector-data"><span>STATUS</span><b>READY</b></div></aside>
+  </div>
+</section>
+
+<section id="pipeline" class="section pipeline-builder reveal">
+  <div class="section-head"><div><div class="section-kicker">07 / CI/CD PIPELINE BUILDER</div><h2>Design a<br><em>delivery path.</em></h2></div><p>Choose components to generate a conceptual pipeline.</p></div>
+  <div class="pipeline-builder-grid">
+    <div class="pipeline-controls panel-card">
+      <label>SOURCE<select id="pipeSource"><option>GitHub</option><option>GitLab</option></select></label>
+      <label>BUILD<select id="pipeBuild"><option>Python</option><option>Node.js</option><option>Static Web</option></select></label>
+      <label>CONTAINER<select id="pipeContainer"><option>Docker</option><option>None</option></select></label>
+      <label>DEPLOY<select id="pipeDeploy"><option>AWS ECS</option><option>AWS EKS</option><option>AWS EC2</option><option>Azure Container Apps</option></select></label>
+      <label>OBSERVE<select id="pipeObserve"><option>CloudWatch</option><option>Prometheus + Grafana</option><option>Logs only</option></select></label>
+      <button class="button primary magnetic" id="generatePipeline" type="button">GENERATE PIPELINE →</button>
+    </div>
+    <div class="pipeline-canvas" id="pipelineCanvas"><div class="pipeline-path" id="pipelinePath"></div><div class="pipeline-note">Select your delivery stack, then generate the visual flow.</div></div>
+  </div>
+</section>
+
+<section id="roadmap" class="section roadmap reveal">
+  <div class="section-head"><div><div class="section-kicker">08 / DEVOPS LEARNING ROADMAP</div><h2>Build the<br><em>next layer.</em></h2></div><p>Self-assessed levels — no inflated production claims.</p></div>
+  <div class="roadmap-grid">
+    <div class="roadmap-track">
+      <div class="road-node done"><span>01</span><b>Linux / Bash</b><small>ADVANCED · FOUNDATION</small></div>
+      <div class="road-node done"><span>02</span><b>Networking</b><small>ADVANCED · FOUNDATION</small></div>
+      <div class="road-node active"><span>03</span><b>Git / Docker / CI/CD</b><small>INTERMEDIATE · BUILDING</small></div>
+      <div class="road-node active"><span>04</span><b>AWS / Azure</b><small>INTERMEDIATE · BUILDING</small></div>
+      <div class="road-node next"><span>05</span><b>Kubernetes / Terraform</b><small>BEGINNER · NEXT</small></div>
+      <div class="road-node next"><span>06</span><b>Monitoring / Ansible</b><small>BEGINNER · NEXT</small></div>
+    </div>
+    <div class="road-objectives panel-card"><span class="console-label">NEXT MISSIONS</span><ol><li>Containerize a real application.</li><li>Build a repeatable CI/CD workflow.</li><li>Provision cloud resources as code.</li><li>Deploy and troubleshoot Kubernetes workloads.</li><li>Add metrics, logs and alerting.</li></ol><div class="road-footer"><i></i> PROGRESS CHANGES AS PROJECT EVIDENCE GROWS</div></div>
+  </div>
+</section>
+
+<section id="devsecops" class="section devsecops reveal">
+  <div class="section-head"><div><div class="section-kicker">09 / DEVSECOPS SECURITY CENTER</div><h2>Secure the<br><em>delivery chain.</em></h2></div><p>Security mindset carried forward from your web security background.</p></div>
+  <div class="sec-flow">
+    <div class="sec-stage"><span>01</span><b>SOURCE</b><small>Git repository</small><i>✓</i></div><div class="sec-arrow">→</div>
+    <div class="sec-stage"><span>02</span><b>SAST</b><small>Static analysis</small><i>✓</i></div><div class="sec-arrow">→</div>
+    <div class="sec-stage"><span>03</span><b>DEPENDENCIES</b><small>Package scan</small><i>✓</i></div><div class="sec-arrow">→</div>
+    <div class="sec-stage"><span>04</span><b>SECRETS</b><small>Credential scan</small><i>✓</i></div><div class="sec-arrow">→</div>
+    <div class="sec-stage"><span>05</span><b>IMAGE</b><small>Container scan</small><i>✓</i></div><div class="sec-arrow">→</div>
+    <div class="sec-stage"><span>06</span><b>DEPLOY</b><small>Protected release</small><i>✓</i></div>
+  </div>
+  <div class="security-grid"><div><span>APPLICATION SECURITY</span><b>FOUNDATION</b></div><div><span>DEVSECOPS</span><b>BUILDING</b></div><div><span>SECRET MANAGEMENT</span><b>LEARNING</b></div><div><span>CONTAINER SECURITY</span><b>LEARNING</b></div></div>
+</section>
+
+<section id="analytics" class="section github-analytics reveal">
+  <div class="section-head"><div><div class="section-kicker">10 / GITHUB ENGINEERING ANALYTICS</div><h2>Repository<br><em>signals.</em></h2></div><p>Live public-data summary from GitHub.</p></div>
+  <div class="analytics-grid">
+    <div class="analytics-main panel-card"><div class="analytics-top"><span>PUBLIC REPOSITORIES</span><b id="analyticsRepoCount">—</b></div><div class="bar-list" id="languageBars"><div class="bar-empty">Loading language distribution…</div></div></div>
+    <div class="analytics-side"><div class="analytics-stat"><span>FOLLOWERS</span><b id="analyticsFollowers">—</b></div><div class="analytics-stat"><span>FOLLOWING</span><b id="analyticsFollowing">—</b></div><div class="analytics-stat"><span>STARS</span><b id="analyticsStars">—</b></div><div class="analytics-stat"><span>TOP REPO</span><b id="analyticsTopRepo">—</b></div></div>
+  </div>
+</section>
+
+<section id="lab" class="section labs reveal">
+  <div class="section-head"><div><div class="section-kicker">11 / ENGINEERING LABS</div><h2>Practice<br><em>systems safely.</em></h2></div><p>Interactive simulations — they do not touch real infrastructure.</p></div>
+  <div class="lab-grid">
+    <article class="lab-card" id="docker-lab"><div class="lab-head"><span>DOCKER PLAYGROUND</span><b>SIMULATION</b></div><div class="docker-terminal" id="dockerOutput"><div>docker-engine: portfolio sandbox</div><div>2 images · 3 containers · 1 network</div></div><div class="lab-buttons"><button class="button secondary lab-btn" data-docker="ps">docker ps</button><button class="button secondary lab-btn" data-docker="run">docker run nginx</button><button class="button secondary lab-btn" data-docker="logs">docker logs web</button><button class="button secondary lab-btn" data-docker="stop">docker stop web</button></div></article>
+    <article class="lab-card" id="k8s-lab"><div class="lab-head"><span>KUBERNETES CLUSTER</span><b>LEARNING LAB</b></div><div class="k8s-map"><div class="k8s-control">CONTROL PLANE</div><div class="k8s-nodes"><div class="k8s-node"><span>NODE-01</span><i></i><i></i><i></i></div><div class="k8s-node"><span>NODE-02</span><i></i><i></i></div><div class="k8s-node"><span>NODE-03</span><i></i></div></div></div><div class="k8s-status"><span>DEPLOYMENT</span><b>3/3 READY</b><span>SERVICE</span><b>CLUSTER-IP</b></div></article>
+    <article class="lab-card" id="terraform-lab"><div class="lab-head"><span>TERRAFORM STUDIO</span><b>SIMULATION</b></div><pre class="code-block"><code>resource "aws_instance" "web" {
+  ami           = "ami-demo"
+  instance_type = "t3.micro"
+}
+
+resource "aws_s3_bucket" "assets" {
+  bucket = "souvik-demo-assets"
+}</code></pre><div class="tf-result" id="tfResult">Waiting for terraform plan…</div><div class="lab-buttons"><button class="button primary lab-btn" id="tfPlan">terraform plan</button><button class="button secondary lab-btn" id="tfApply">terraform apply</button></div></article>
+    <article class="lab-card ai-card" id="ai-assistant"><div class="lab-head"><span>AI DEVOPS ASSISTANT</span><b id="aiStatus">BACKEND OFFLINE / CONFIGURE API</b></div><div class="ai-toolbar"><div class="ai-modes" role="tablist" aria-label="AI mode"><button type="button" class="active" data-ai-mode="explain">EXPLAIN</button><button type="button" data-ai-mode="debug">DEBUG</button><button type="button" data-ai-mode="generate">GENERATE</button><button type="button" data-ai-mode="review">REVIEW</button><button type="button" data-ai-mode="architect">ARCHITECT</button><button type="button" data-ai-mode="learn">LEARN</button></div><label class="ai-web-toggle"><input id="aiLiveWeb" type="checkbox"> <span>LIVE WEB</span></label><button type="button" class="ai-clear" id="aiClear">CLEAR</button></div><div class="ai-screen" id="aiScreen"><div class="ai-msg bot"><strong>DEVOPS AI READY</strong><br>Connect the secure backend to unlock live model responses, GitHub-aware context and optional live web search.<br><br>Try: <code>ask What should I learn next for Kubernetes?</code></div></div><div class="ai-quick"><button type="button" data-ai-prompt="Explain Kubernetes Deployments vs StatefulSets">K8S EXPLAIN</button><button type="button" data-ai-prompt="Debug this Docker container restart loop: it exits with code 1">DEBUG DOCKER</button><button type="button" data-ai-prompt="Generate a secure GitHub Actions CI/CD workflow for a Dockerized Python app">CI/CD YAML</button><button type="button" data-ai-prompt="Architect a small AWS deployment for a containerized web app">AWS ARCHITECTURE</button></div><form class="ai-form" id="aiForm"><input id="aiInput" placeholder="Ask the DevOps AI…" autocomplete="off" aria-label="Ask the DevOps AI"><button type="submit">ASK ↗</button></form><div class="ai-foot"><span id="aiModel">MODEL: —</span><span id="aiLatency">READY</span></div></article>
+  </div>
+</section>
+
+<section class="recruiter-snapshot section reveal">
+  <div class="section-kicker">RECRUITER MODE / QUICK SCAN</div>
+  <div class="recruiter-grid"><div><span>TARGET</span><strong>Cloud / DevOps Engineer</strong></div><div><span>FOUNDATIONS</span><strong>Linux · Bash · Networking</strong></div><div><span>CLOUD</span><strong>AWS · Azure</strong></div><div><span>AUTOMATION</span><strong>GitHub Actions · Docker</strong></div><div><span>BUILDING</span><strong>Kubernetes · Terraform · Observability</strong></div><div><span>CONTACT</span><strong>snaptokon@proton.me</strong></div></div>
+  <div class="recruiter-actions"><a class="button primary magnetic" href="Souvik_Pramanik_Resume_2026.pdf" target="_blank" rel="noreferrer">OPEN RESUME ↗</a><a class="button secondary magnetic" href="https://www.linkedin.com/in/nukebyte" target="_blank" rel="noreferrer">LINKEDIN ↗</a><a class="button secondary magnetic" href="mailto:snaptokon@proton.me">EMAIL ↗</a></div>
+</section>
+
+<section id="experience" class="section experience">
+  <div class="section-head reveal"><div><div class="section-kicker">16 / CAREER TIMELINE</div><h2>Trajectory<br><em>in motion.</em></h2></div><p>Scroll to activate each node.</p></div>
+  <div class="career-line"><i></i></div>
+  <div class="timeline">
+    <article class="role reveal tilt"><div class="role-no">01</div><div class="role-date">JAN 2025 — DEC 2025</div><div><h3>IT & Hardware Support Engineer</h3><b>Dell Technologies</b><p>On-site hardware and IT support experience, building practical foundations in operating systems, troubleshooting and field operations.</p><div class="tags"><span>HARDWARE</span><span>OS</span><span>SUPPORT</span></div></div></article>
+    <article class="role reveal tilt"><div class="role-no">02</div><div class="role-date">SEP 2024</div><div><h3>Full Stack Web Developer</h3><b>Techplement</b><p>Remote internship focused on web applications with React.js and exposure to Vercel.</p><div class="tags"><span>REACT</span><span>WEB</span><span>VERCEL</span></div></div></article>
+    <article class="role reveal tilt"><div class="role-no">03</div><div class="role-date">FEB 2024 — MAR 2024</div><div><h3>Web App Pen Tester Trainee</h3><b>Ardent Computech Pvt. Ltd.</b><p>On-site training in web application vulnerability testing.</p><div class="tags"><span>SECURITY</span><span>PENTEST</span></div></div></article>
+    <article class="role reveal tilt"><div class="role-no">04</div><div class="role-date">2020</div><div><h3>Cyber Security Intern</h3><b>Techobyte Technologies</b><p>Hybrid internship focused on security techniques and defensive approaches to cyber-attacks.</p><div class="tags"><span>CYBERSECURITY</span><span>DEFENSE</span></div></div></article>
+    <article class="role reveal tilt current-path"><div class="role-no">→</div><div class="role-date">CURRENT DIRECTION</div><div><h3>Cloud / DevOps Engineering</h3><b>Building the next chapter</b><p>Developing cloud, container, automation and CI/CD capabilities toward a Cloud/DevOps Engineer role.</p><div class="tags"><span>AWS</span><span>DOCKER</span><span>CI/CD</span><span>K8S</span></div></div></article>  </div>
+</section>
+
+<section id="projects" class="section projects">
+  <div class="section-head reveal"><div><div class="section-kicker">17 / SELECTED TECHNICAL WORK</div><h2>Past work.<br><em>New direction.</em></h2></div><p>Existing technical work remains part of the story while the DevOps portfolio is being built.</p></div>
+  <div class="project-grid">
+    <article class="project project-main reveal tilt" data-project="weather">
+      <div class="project-art weather"><div class="sun"></div><div class="cloud ca"></div><div class="cloud cb"></div><div class="forecast"><span>NEW DELHI</span><strong>27°</strong><small>PARTLY CLOUDY · 7 DAY FORECAST</small></div></div>
+      <div class="project-copy"><span>01 / FLUTTER · DEC 2024</span><h3>Animated Weather Application</h3><p>Real-time weather, 7-day forecast, dynamic animations, modern UI and GPS location tracking.</p><button class="open-project magnetic">OPEN CASE FILE ↗</button></div>
+    </article>
+    <article class="project reveal tilt" data-project="ml"><div class="project-art ml"><div class="scan-face"></div><div class="box"></div><span>MASK / DETECTED</span></div><div class="project-copy"><span>02 / PYTHON · ML · 2023</span><h3>Facemask Detection</h3><p>Machine-learning work focused on identifying facemasks in images.</p><button class="open-project magnetic">OPEN CASE FILE ↗</button></div></article>
+    <article class="project reveal tilt" data-project="quantum"><div class="project-art quantum"><div class="q q1"></div><div class="q q2"></div><b>Q</b></div><div class="project-copy"><span>03 / IMAGE PROCESSING · 2023</span><h3>Quantum Image Morphological Operation</h3><p>Image sharpening and restoration using quantum and classical processing techniques.</p><button class="open-project magnetic">OPEN CASE FILE ↗</button></div></article>
+  </div>
+</section>
+
+<section class="dashboard reveal">
+  <div class="section-kicker">18 / ENGINEERING STATUS</div><div class="dash-grid">
+    <div class="dash-main"><h2>Engineering<br><em>status.</em></h2><div class="uptime"><strong>DEV</strong><span>OPS<br>MODE</span></div></div>
+    <div class="status-list">
+      <div><span>LINUX</span><b><i></i> STRONG</b></div><div><span>NETWORKING</span><b><i></i> STRONG</b></div><div><span>CLOUD</span><b><i></i> ACTIVE</b></div><div><span>CONTAINERS</span><b><i></i> BUILDING</b></div><div><span>OBSERVABILITY</span><b><i></i> LEARNING</b></div>
+    </div>
+  </div>
+  <div class="metrics"><div><span>AWS SERVICES USED</span><b data-count="7">0</b></div><div><span>DEVOPS FOCUS AREAS</span><b data-count="15">0</b></div><div><span>BUILD STATUS</span><b class="metric-word">WIP</b></div></div>
+</section>
+
+<section id="stack" class="skills-section reveal">
+  <div class="section-head"><div><div class="section-kicker">19 / DEVOPS SKILL NETWORK</div><h2>Everything<br><em>connects.</em></h2></div><p>Hover nodes to reveal the infrastructure mindset.</p></div>
+  <div class="network" id="network"><svg></svg><div class="skill-center">DEV<br><small>OPS</small></div>
+    <button class="skill-node sn1">LINUX</button><button class="skill-node sn2">BASH</button><button class="skill-node sn3">AWS</button><button class="skill-node sn4">DOCKER</button><button class="skill-node sn5">CI/CD</button><button class="skill-node sn6">K8S</button><button class="skill-node sn7">NETWORK</button><button class="skill-node sn8">GIT</button>
+  </div>
+</section>
+
+<section class="recognition reveal"><div><div class="section-kicker">20 / RECOGNITION</div><h2>Competitive<br><em>by nature.</em></h2></div><div class="awards">
+  <div><strong>1st</strong><span><b>Google Cloud Community Day Hackathon</b><small>2022</small></span><i>↗</i></div>
+  <div><strong>1st</strong><span><b>Phoenix Hackathon</b><small>2022</small></span><i>↗</i></div>
+  <div><strong>2nd</strong><span><b>Highest position in Diploma CSE</b><small>2021</small></span><i>↗</i></div>
+  <div><strong>Finalist</strong><span><b>Smart India Hackathon — Grand Finalist</b><small>2020</small></span><i>↗</i></div>
+</div></section>
+
+<section class="education section reveal"><div class="section-head"><div><div class="section-kicker">21 / FOUNDATION</div><h2>Education &<br><em>credentials.</em></h2></div></div>
+<div class="edu-grid"><article class="tilt"><span>2021 — 2024</span><h3>Bachelor's Degree</h3><p>Computer Science & Engineering<br>Techno India College of Technology</p><b>B.TECH / CSE</b></article><article class="tilt"><span>2018 — 2021</span><h3>Diploma</h3><p>Computer Science & Engineering<br>Brainware University</p><b>DIP/CSE</b></article><article class="tilt"><span>2016 — 2018</span><h3>Higher Secondary</h3><p>Science<br>Nimpura Aryya Bidyapith</p><b>SCI</b></article></div></section>
+
+<section class="credentials section reveal"><div class="section-kicker">22 / CREDENTIALS</div><div class="cert-grid"><article class="tilt"><span>2024</span><h3>Google Analytics for Beginners</h3><p>Google Analytics</p></article><article class="tilt"><span>2023</span><h3>Certified Blockchain Practitioner</h3><p>The SecOps Group · CBP</p></article></div></section>
+
+<section id="contact" class="contact reveal"><div class="contact-grid"></div><div class="contact-orb"></div><div class="section-kicker">23 / NEXT MOVE</div><h2>Let's build the<br><em>next system.</em></h2><p>Cloud · DevOps · infrastructure · automation</p><div class="contact-actions"><a class="button primary magnetic" href="mailto:snaptokon@proton.me">EMAIL ME ↗</a><a class="button secondary magnetic" href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer">GITHUB ↗</a><a class="button secondary magnetic" href="https://www.linkedin.com/in/nukebyte" target="_blank" rel="noreferrer">LINKEDIN ↗</a></div><div class="contact-details">snaptokon@proton.me · +91 9064999854 · Kolkata, India</div><div class="ready">OPEN_TO_CLOUD_DEVOPS<span>_</span></div></section>
+</main>
+
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
+<div class="easter" id="easter"><div><span>SYSTEM OVERRIDE</span><h2>CHEAT MODE<br><em>UNLOCKED.</em></h2><p>You found the hidden interface.</p><button id="easterClose" class="button primary">RETURN ↗</button></div></div>
+<footer><span>© 2026 SOUVIK PRAMANIK</span><span>KOLKATA / INDIA</span><a href="Souvik_Pramanik_Resume_2026.pdf" target="_blank" rel="noreferrer">RESUME ↗</a><a href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer">GITHUB ↗</a></footer>
+<script src="script.js"></script>
+</body>
+</html>

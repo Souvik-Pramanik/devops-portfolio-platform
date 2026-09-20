@@ -18,4 +18,5 @@ module "ecs" {
   public_subnet_ids     = module.vpc.public_subnet_ids
   ecr_repository_url    = module.ecr.repository_url
   alb_security_group_id = module.vpc.alb_security_group_id
+  image_tag             = var.image_tag
 }

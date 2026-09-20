@@ -26,7 +26,7 @@ resource "aws_subnet" "public" {
     ManagedBy   = "Terraform"
     Tier        = "public"
   }
-} 
+}
 
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id

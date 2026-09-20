@@ -8,4 +8,5 @@ tests
 .env.*
 coverage
 README.md
-docs
+terraform
+docker-compose.override.yml

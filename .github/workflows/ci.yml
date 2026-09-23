@@ -23,32 +23,32 @@ env:
 
 jobs:
 
-  test:
-    name: Test & Security
+    test:
+    name: Test and Security
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-        fetch-depth: 0
+          fetch-depth: 0
 
-      - name: Secret detection
+      - name: Secret Detection
         uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: SAST scan
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: p/javascript
-          auditOn: push
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+
+      - name: SAST scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/javascript
+          auditOn: push
 
       - name: Install dependencies
         run: npm ci

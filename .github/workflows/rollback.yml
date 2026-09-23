@@ -1,0 +1,53 @@
+name: Manual ECS Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_definition:
+        description: "Known-good ECS task definition revision or ARN, e.g. devops-portfolio-platform:4"
+        required: true
+        type: string
+      reason:
+        description: "Rollback reason"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-south-1
+  ECS_CLUSTER: devops-portfolio-cluster
+  ECS_SERVICE: devops-portfolio-service
+
+jobs:
+  rollback:
+    name: Roll back ECS service
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::833822619479:role/GitHubActions-DevOpsPortfolio
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Validate task definition
+        env:
+          TASK_DEFINITION: ${{ inputs.task_definition }}
+        run: |
+          aws ecs describe-task-definition             --task-definition "$TASK_DEFINITION"             --query 'taskDefinition.taskDefinitionArn'             --output text
+
+      - name: Roll back service
+        env:
+          TASK_DEFINITION: ${{ inputs.task_definition }}
+        run: |
+          aws ecs update-service             --cluster "$ECS_CLUSTER"             --service "$ECS_SERVICE"             --task-definition "$TASK_DEFINITION"             --force-new-deployment
+
+          aws ecs wait services-stable             --cluster "$ECS_CLUSTER"             --services "$ECS_SERVICE"
+
+      - name: Verify rollback
+        run: |
+          aws ecs describe-services             --cluster "$ECS_CLUSTER"             --services "$ECS_SERVICE"             --query "services[0].{TaskDefinition:taskDefinition,Running:runningCount,Desired:desiredCount,Status:status}"             --output table
+
+          echo "Rollback reason: ${{ inputs.reason }}"

@@ -19,4 +19,5 @@ module "ecs" {
   ecr_repository_url    = module.ecr.repository_url
   alb_security_group_id = module.vpc.alb_security_group_id
   image_tag             = var.image_tag
+  enable_blue_green     = var.enable_blue_green
 }

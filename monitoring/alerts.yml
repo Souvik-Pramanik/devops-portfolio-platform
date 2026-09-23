@@ -1,0 +1,50 @@
+groups:
+  - name: portfolio-alerts
+    rules:
+      - alert: PortfolioHighErrorRate
+        expr: |
+          rate(portfolio_http_errors_total[5m])
+          /
+          clamp_min(rate(portfolio_http_requests_total[5m]), 0.001)
+          > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Portfolio error rate is above 5%
+          description: More than 5% of HTTP requests are returning errors.
+
+      - alert: PortfolioHighLatency
+        expr: |
+          rate(portfolio_http_response_time_ms_total[5m])
+          /
+          clamp_min(rate(portfolio_http_response_time_samples[5m]), 0.001)
+          > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Portfolio response latency is above 1 second
+          description: Average observed response time has exceeded 1000 ms.
+
+      - alert: PortfolioMemoryPressure
+        expr: |
+          portfolio_process_resident_memory_bytes
+          /
+          536870912
+          > 0.80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Portfolio memory usage is above 80% of 512 MiB
+          description: RSS is above the configured container memory budget threshold.
+
+      - alert: PortfolioDown
+        expr: up{job="portfolio"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Portfolio metrics endpoint is unavailable
+          description: Prometheus cannot scrape the application.

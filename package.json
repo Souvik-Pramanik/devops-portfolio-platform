@@ -1,13 +1,15 @@
 {
   "name": "souvik-cloud-devops-portfolio-ai",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "private": true,
   "type": "module",
-  "description": "Cloud & DevOps portfolio with a resilient Gemini-powered assistant backend.",
+  "description": "Production-oriented Cloud/DevOps portfolio platform with CI/CD, DevSecOps, observability and AIOps demonstrations.",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "test:api": "node --test tests/*.test.js",
+    "metrics:check": "node --test tests/observability.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

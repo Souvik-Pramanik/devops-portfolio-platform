@@ -346,3 +346,66 @@ aiHealth();
 /* Recruiter mode upgrade: auto-scroll to high-signal sections and focus the quick scan */
 const originalApplyMode=applyMode;
 applyMode=function(mode,animate=true){originalApplyMode(mode,animate);if(mode==='recruiter'){document.documentElement.style.setProperty('--mode-accent','#1e6b4a');setTimeout(()=>document.querySelector('.recruiter-snapshot')?.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'}),220)}else{document.documentElement.style.setProperty('--mode-accent','#d8ff45')}};
+
+/* ===== Operations Center / observability ===== */
+const opsState={poll:null};
+const fmtDuration=seconds=>{
+  const s=Math.max(0,Number(seconds)||0);
+  if(s<60)return `${Math.round(s)}s`;
+  if(s<3600)return `${Math.floor(s/60)}m ${Math.floor(s%60)}s`;
+  return `${Math.floor(s/3600)}h ${Math.floor((s%3600)/60)}m`;
+};
+const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+async function refreshOperations(){
+  try{
+    const [health,ops,deploy]=await Promise.all([
+      fetch(aiEndpoint('/api/health'),{cache:'no-store'}).then(r=>r.json()),
+      fetch(aiEndpoint('/api/ops'),{cache:'no-store'}).then(r=>r.json()),
+      fetch(aiEndpoint('/api/deployment'),{cache:'no-store'}).then(r=>r.json())
+    ]);
+    setText('opsStatus',health.status?.toUpperCase()||'HEALTHY');
+    setText('opsVersion',`VERSION ${health.version||'—'}`);
+    setText('opsUptime',fmtDuration(ops.uptimeSeconds));
+    setText('opsEnvironment',`ENVIRONMENT ${(ops.environment||'—').toUpperCase()}`);
+    setText('opsRequests',String(ops.metrics?.requests??0));
+    setText('opsErrors',`ERRORS ${ops.metrics?.errors??0} · ${(Number(ops.metrics?.errorRate||0)*100).toFixed(2)}%`);
+    setText('opsLatency',`${Number(ops.metrics?.averageResponseMs||0).toFixed(1)}ms`);
+    setText('opsMemory',`MEMORY ${Number(ops.metrics?.memoryRssMb||0).toFixed(1)}MB`);
+    setText('deploymentVersion',deploy.version||'—');
+    setText('deploymentSha',(deploy.gitSha||'—').slice(0,12));
+    setText('deploymentEnv',deploy.environment||'—');
+    setText('deploymentAt',deploy.deployedAt?new Date(deploy.deployedAt).toLocaleString():'LOCAL / NOT SET');
+    setText('deploymentState','HEALTHY');
+    const live=document.getElementById('opsLiveState');
+    if(live){live.classList.add('online');live.innerHTML='<i></i> TELEMETRY ONLINE';}
+    setText('opsLastUpdated',`UPDATED ${new Date().toLocaleTimeString()}`);
+    const ai=document.getElementById('integrationAI');
+    if(ai)ai.innerHTML=`<i></i> AI BACKEND ${health.aiConfigured?'ONLINE':'READY / KEY REQUIRED'}`;
+  }catch(err){
+    const live=document.getElementById('opsLiveState');
+    if(live){live.classList.remove('online');live.innerHTML='<i></i> TELEMETRY OFFLINE';}
+    setText('opsLastUpdated','TELEMETRY UNAVAILABLE');
+  }
+}
+document.getElementById('opsRefresh')?.addEventListener('click',refreshOperations);
+refreshOperations();
+opsState.poll=setInterval(refreshOperations,15000);
+
+const chaosScenarios={
+  health:['HEALTH CHECK FAILURE','Probe returns non-200','DETECTING','RESTARTING','HEALTHY'],
+  latency:['HIGH LATENCY','Response time threshold exceeded','DETECTING','THROTTLING','HEALTHY'],
+  deployment:['DEPLOYMENT FAILURE','Candidate revision failed validation','DETECTING','ROLLING BACK','HEALTHY'],
+  restart:['CONTAINER RESTART','Process exited unexpectedly','DETECTING','REPLACEMENT TASK','HEALTHY']
+};
+function runChaos(type){
+  const data=chaosScenarios[type];if(!data)return;
+  const flow=document.getElementById('incidentFlow'),log=document.getElementById('incidentLog');
+  const spans=[...flow.querySelectorAll('span')];
+  spans.forEach(s=>s.classList.remove('active'));
+  spans[0]?.classList.add('active');
+  log.textContent=`SIMULATION: ${data[0]} · ${data[1]}`;
+  setTimeout(()=>{spans.forEach(s=>s.classList.remove('active'));spans[1]?.classList.add('active');log.textContent=`DETECTED: ${data[1]}`},500);
+  setTimeout(()=>{spans.forEach(s=>s.classList.remove('active'));spans[2]?.classList.add('active');log.textContent=`RECOVERY ACTION: ${data[3]}`},1100);
+  setTimeout(()=>{spans.forEach(s=>s.classList.remove('active'));spans[3]?.classList.add('active');log.textContent=`RECOVERY COMPLETE: ${data[4]} · No real infrastructure was modified.`},1700);
+}
+$$('.chaos-btn').forEach(b=>b.addEventListener('click',()=>runChaos(b.dataset.chaos)));

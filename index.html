@@ -246,26 +246,110 @@ resource "aws_s3_bucket" "assets" {
   <div class="metrics"><div><span>AWS SERVICES USED</span><b data-count="7">0</b></div><div><span>DEVOPS FOCUS AREAS</span><b data-count="15">0</b></div><div><span>BUILD STATUS</span><b class="metric-word">WIP</b></div></div>
 </section>
 
+<section id="operations" class="ops-section section reveal">
+  <div class="section-head">
+    <div><div class="section-kicker">19 / DEVOPS OPERATIONS CENTER</div><h2>Observe.<br><em>Operate.</em></h2></div>
+    <p>Live application telemetry + deployment metadata.</p>
+  </div>
+
+  <div class="ops-toolbar">
+    <span id="opsLiveState" class="ops-live"><i></i> CONNECTING</span>
+    <span id="opsLastUpdated">WAITING FOR TELEMETRY</span>
+    <button class="button secondary ops-refresh" id="opsRefresh" type="button">REFRESH ↻</button>
+  </div>
+
+  <div class="ops-grid">
+    <article class="ops-card ops-health">
+      <span>APPLICATION</span><strong id="opsStatus">—</strong>
+      <small id="opsVersion">VERSION —</small>
+    </article>
+    <article class="ops-card">
+      <span>UPTIME</span><strong id="opsUptime">—</strong>
+      <small id="opsEnvironment">ENVIRONMENT —</small>
+    </article>
+    <article class="ops-card">
+      <span>REQUESTS</span><strong id="opsRequests">—</strong>
+      <small id="opsErrors">ERRORS —</small>
+    </article>
+    <article class="ops-card">
+      <span>LATENCY</span><strong id="opsLatency">—</strong>
+      <small id="opsMemory">MEMORY —</small>
+    </article>
+  </div>
+
+  <div class="ops-panels">
+    <article class="ops-panel">
+      <div class="ops-panel-head"><span>DEPLOYMENT METADATA</span><b id="deploymentState">READY</b></div>
+      <dl class="ops-details">
+        <div><dt>VERSION</dt><dd id="deploymentVersion">—</dd></div>
+        <div><dt>COMMIT</dt><dd id="deploymentSha">—</dd></div>
+        <div><dt>ENVIRONMENT</dt><dd id="deploymentEnv">—</dd></div>
+        <div><dt>DEPLOYED</dt><dd id="deploymentAt">—</dd></div>
+      </dl>
+    </article>
+
+    <article class="ops-panel">
+      <div class="ops-panel-head"><span>INTEGRATIONS</span><b>LIVE</b></div>
+      <div class="integration-grid">
+        <span><i></i> HEALTH API</span>
+        <span><i></i> PROMETHEUS</span>
+        <span><i></i> GITHUB</span>
+        <span id="integrationAI"><i></i> AI BACKEND</span>
+        <span><i></i> CLOUDWATCH</span>
+        <span><i></i> CONTAINER</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="ops-panels">
+    <article class="ops-panel">
+      <div class="ops-panel-head"><span>FAILURE / CHAOS LAB</span><b>SIMULATION ONLY</b></div>
+      <p class="ops-muted">Controlled browser-side simulations demonstrate incident detection and recovery without granting public users infrastructure permissions.</p>
+      <div class="chaos-buttons">
+        <button class="button secondary chaos-btn" data-chaos="health">HEALTH CHECK FAILURE</button>
+        <button class="button secondary chaos-btn" data-chaos="latency">HIGH LATENCY</button>
+        <button class="button secondary chaos-btn" data-chaos="deployment">DEPLOYMENT FAILURE</button>
+        <button class="button secondary chaos-btn" data-chaos="restart">CONTAINER RESTART</button>
+      </div>
+      <div class="incident-flow" id="incidentFlow"><span>READY</span><i>→</i><span>DETECT</span><i>→</i><span>RECOVER</span><i>→</i><span>HEALTHY</span></div>
+      <div class="incident-log" id="incidentLog">No simulated incidents. Select a scenario to run the recovery exercise.</div>
+    </article>
+
+    <article class="ops-panel">
+      <div class="ops-panel-head"><span>RELEASE STRATEGY</span><b>AVAILABLE</b></div>
+      <div class="strategy">
+        <div><strong>BLUE</strong><span>Known-good revision</span></div>
+        <em>TRAFFIC</em>
+        <div><strong>GREEN</strong><span>Candidate revision</span></div>
+      </div>
+      <p class="ops-muted">Terraform includes an optional CodeDeploy/ECS blue-green foundation. It is disabled by default to avoid changing the current production service automatically.</p>
+      <div class="strategy-actions">
+        <span>ROLLBACK</span><span>HEALTH VERIFY</span><span>TRAFFIC SWITCH</span>
+      </div>
+    </article>
+  </div>
+</section>
+
 <section id="stack" class="skills-section reveal">
-  <div class="section-head"><div><div class="section-kicker">19 / DEVOPS SKILL NETWORK</div><h2>Everything<br><em>connects.</em></h2></div><p>Hover nodes to reveal the infrastructure mindset.</p></div>
+  <div class="section-head"><div><div class="section-kicker">20 / DEVOPS SKILL NETWORK</div><h2>Everything<br><em>connects.</em></h2></div><p>Hover nodes to reveal the infrastructure mindset.</p></div>
   <div class="network" id="network"><svg></svg><div class="skill-center">DEV<br><small>OPS</small></div>
     <button class="skill-node sn1">LINUX</button><button class="skill-node sn2">BASH</button><button class="skill-node sn3">AWS</button><button class="skill-node sn4">DOCKER</button><button class="skill-node sn5">CI/CD</button><button class="skill-node sn6">K8S</button><button class="skill-node sn7">NETWORK</button><button class="skill-node sn8">GIT</button>
   </div>
 </section>
 
-<section class="recognition reveal"><div><div class="section-kicker">20 / RECOGNITION</div><h2>Competitive<br><em>by nature.</em></h2></div><div class="awards">
+<section class="recognition reveal"><div><div class="section-kicker">21 / RECOGNITION</div><h2>Competitive<br><em>by nature.</em></h2></div><div class="awards">
   <div><strong>1st</strong><span><b>Google Cloud Community Day Hackathon</b><small>2022</small></span><i>↗</i></div>
   <div><strong>1st</strong><span><b>Phoenix Hackathon</b><small>2022</small></span><i>↗</i></div>
   <div><strong>2nd</strong><span><b>Highest position in Diploma CSE</b><small>2021</small></span><i>↗</i></div>
   <div><strong>Finalist</strong><span><b>Smart India Hackathon — Grand Finalist</b><small>2020</small></span><i>↗</i></div>
 </div></section>
 
-<section class="education section reveal"><div class="section-head"><div><div class="section-kicker">21 / FOUNDATION</div><h2>Education &<br><em>credentials.</em></h2></div></div>
+<section class="education section reveal"><div class="section-head"><div><div class="section-kicker">22 / FOUNDATION</div><h2>Education &<br><em>credentials.</em></h2></div></div>
 <div class="edu-grid"><article class="tilt"><span>2021 — 2024</span><h3>Bachelor's Degree</h3><p>Computer Science & Engineering<br>Techno India College of Technology</p><b>B.TECH / CSE</b></article><article class="tilt"><span>2018 — 2021</span><h3>Diploma</h3><p>Computer Science & Engineering<br>Brainware University</p><b>DIP/CSE</b></article><article class="tilt"><span>2016 — 2018</span><h3>Higher Secondary</h3><p>Science<br>Nimpura Aryya Bidyapith</p><b>SCI</b></article></div></section>
 
-<section class="credentials section reveal"><div class="section-kicker">22 / CREDENTIALS</div><div class="cert-grid"><article class="tilt"><span>2024</span><h3>Google Analytics for Beginners</h3><p>Google Analytics</p></article><article class="tilt"><span>2023</span><h3>Certified Blockchain Practitioner</h3><p>The SecOps Group · CBP</p></article></div></section>
+<section class="credentials section reveal"><div class="section-kicker">23 / CREDENTIALS</div><div class="cert-grid"><article class="tilt"><span>2024</span><h3>Google Analytics for Beginners</h3><p>Google Analytics</p></article><article class="tilt"><span>2023</span><h3>Certified Blockchain Practitioner</h3><p>The SecOps Group · CBP</p></article></div></section>
 
-<section id="contact" class="contact reveal"><div class="contact-grid"></div><div class="contact-orb"></div><div class="section-kicker">23 / NEXT MOVE</div><h2>Let's build the<br><em>next system.</em></h2><p>Cloud · DevOps · infrastructure · automation</p><div class="contact-actions"><a class="button primary magnetic" href="mailto:snaptokon@proton.me">EMAIL ME ↗</a><a class="button secondary magnetic" href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer">GITHUB ↗</a><a class="button secondary magnetic" href="https://www.linkedin.com/in/nukebyte" target="_blank" rel="noreferrer">LINKEDIN ↗</a></div><div class="contact-details">snaptokon@proton.me · +91 9064999854 · Kolkata, India</div><div class="ready">OPEN_TO_CLOUD_DEVOPS<span>_</span></div></section>
+<section id="contact" class="contact reveal"><div class="contact-grid"></div><div class="contact-orb"></div><div class="section-kicker">24 / NEXT MOVE</div><h2>Let's build the<br><em>next system.</em></h2><p>Cloud · DevOps · infrastructure · automation</p><div class="contact-actions"><a class="button primary magnetic" href="mailto:snaptokon@proton.me">EMAIL ME ↗</a><a class="button secondary magnetic" href="https://github.com/Souvik-Pramanik" target="_blank" rel="noreferrer">GITHUB ↗</a><a class="button secondary magnetic" href="https://www.linkedin.com/in/nukebyte" target="_blank" rel="noreferrer">LINKEDIN ↗</a></div><div class="contact-details">snaptokon@proton.me · +91 9064999854 · Kolkata, India</div><div class="ready">OPEN_TO_CLOUD_DEVOPS<span>_</span></div></section>
 </main>
 
 <div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>

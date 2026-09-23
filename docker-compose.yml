@@ -3,21 +3,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
-    image: devops-portfolio-platform:1.0.0
-
+      args:
+        APP_VERSION: "9.0.0-local"
+        GIT_SHA: "local"
+    image: devops-portfolio-platform:9.0.0
     container_name: devops-portfolio-platform
-
     ports:
       - "3000:3000"
-
     environment:
       NODE_ENV: production
-      APP_VERSION: "1.0.0"
+      DEPLOY_ENV: docker-compose
+      APP_VERSION: "9.0.0-local"
+      GIT_SHA: "local"
       PORT: 3000
-
     restart: unless-stopped
-
     healthcheck:
       test:
         [
@@ -30,3 +29,41 @@ services:
       timeout: 5s
       start_period: 10s
       retries: 3
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: devops-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.1
+    container_name: devops-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  prometheus-data:
+  grafana-data:

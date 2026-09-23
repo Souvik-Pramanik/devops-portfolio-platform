@@ -9,3 +9,8 @@ variable "image_tag" {
   type        = string
   default     = "latest"
 }
+variable "enable_blue_green" {
+  description = "Enable the optional ECS CodeDeploy blue/green deployment foundation."
+  type        = bool
+  default     = false
+}

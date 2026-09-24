@@ -23,8 +23,8 @@ env:
 
 jobs:
 
-    test:
-    name: Test and Security
+  test:
+    name: Test & Security
     runs-on: ubuntu-latest
 
     steps:
@@ -66,7 +66,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Build Docker image
         run: |
@@ -161,9 +163,14 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
         run: |
-          DIGEST="$(aws ecr describe-images             --repository-name "$ECR_REPOSITORY"             --image-ids imageTag="$GITHUB_SHA"             --query 'imageDetails[0].imageDigest'             --output text)"
+          DIGEST="$(
+            aws ecr describe-images \
+              --repository-name "$ECR_REPOSITORY" \
+              --image-ids imageTag="$GITHUB_SHA" \
+              --query 'imageDetails[0].imageDigest' \
+              --output text
+          )"
 
           cosign sign --yes "${REGISTRY}/${ECR_REPOSITORY}@${DIGEST}"
 
@@ -183,27 +190,52 @@ jobs:
       - name: Download ECS task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition $ECS_TASK_DEFINITION \
+            --task-definition "$ECS_TASK_DEFINITION" \
             --query taskDefinition \
             > task-definition.json
 
       - name: Stamp deployment metadata
         run: |
-          jq --arg version "${GITHUB_SHA:0:7}"              --arg sha "$GITHUB_SHA"              --arg env "aws-ecs"              --arg deployedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)"              --arg container "$CONTAINER_NAME" '
-             .containerDefinitions |= map(
-               if .name == $container then
-                 .environment = ((.environment // [])
-                   | map(select(.name != "APP_VERSION" and .name != "GIT_SHA" and .name != "DEPLOY_ENV" and .name != "DEPLOYED_AT"))
-                   + [
-                     {"name":"APP_VERSION","value":$version},
-                     {"name":"GIT_SHA","value":$sha},
-                     {"name":"DEPLOY_ENV","value":$env},
-                     {"name":"DEPLOYED_AT","value":$deployedAt}
-                   ])
-               else . end
-             )
-             | del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)
-             ' task-definition.json > task-definition-stamped.json
+          jq \
+            --arg version "${GITHUB_SHA:0:7}" \
+            --arg sha "$GITHUB_SHA" \
+            --arg env "aws-ecs" \
+            --arg deployedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg container "$CONTAINER_NAME" \
+            '
+            .containerDefinitions |= map(
+              if .name == $container then
+                .environment = (
+                  (.environment // [])
+                  | map(
+                      select(
+                        .name != "APP_VERSION" and
+                        .name != "GIT_SHA" and
+                        .name != "DEPLOY_ENV" and
+                        .name != "DEPLOYED_AT"
+                      )
+                    )
+                  + [
+                      {"name":"APP_VERSION","value":$version},
+                      {"name":"GIT_SHA","value":$sha},
+                      {"name":"DEPLOY_ENV","value":$env},
+                      {"name":"DEPLOYED_AT","value":$deployedAt}
+                    ]
+                )
+              else
+                .
+              end
+            )
+            | del(
+                .taskDefinitionArn,
+                .revision,
+                .status,
+                .requiresAttributes,
+                .compatibilities,
+                .registeredAt,
+                .registeredBy
+              )
+            ' task-definition.json > task-definition-stamped.json
 
           mv task-definition-stamped.json task-definition.json
 
@@ -226,8 +258,8 @@ jobs:
       - name: Verify ECS
         run: |
           aws ecs describe-services \
-            --cluster $ECS_CLUSTER \
-            --services $ECS_SERVICE \
+            --cluster "$ECS_CLUSTER" \
+            --services "$ECS_SERVICE" \
             --query "services[0].{Running:runningCount,Desired:desiredCount,Status:status}" \
             --output table
 
@@ -254,7 +286,7 @@ jobs:
       - name: Deployment success
         run: |
           echo "======================================"
-          echo "🚀 DEPLOYMENT SUCCESSFUL"
+          echo "DEPLOYMENT SUCCESSFUL"
           echo "======================================"
           echo "Commit: $GITHUB_SHA"
           echo "Environment: production"
